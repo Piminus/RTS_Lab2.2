@@ -1,17 +1,21 @@
-﻿# Шульга Є.К., ІО-71, № заліковки: 7130
+# Шульга Є.К., ІО-71, № заліковки: 7130
 # #  n w    N
 # 30 14 2000 256
+
+# Додаткове завдання: порівняйте час виконання fft вашої реалізації та numpy fft
 
 import random as r
 import math
 import matplotlib.pyplot as plt
+import numpy
+import datetime
 
 n = 14
 w_max = 2000
 N = 256
 
 
-def graph():
+def graph(N):
     x = [0] * N
 
     for i in range(n):
@@ -45,7 +49,20 @@ def fft(x: list):
     return fftt
 
 
-X = graph()
+for x_size in range(256, 2560, 32):
+    now = datetime.datetime.now()
+    numpy.fft.fft(graph(x_size))
+    np_time = datetime.datetime.now() - now
+
+    now = datetime.datetime.now()
+    fft(graph(x_size))
+    fft_time = datetime.datetime.now() - now
+
+    print('X size:', x_size, 'hand-written FFT time:', fft_time, ', Numpy fft time:', np_time)
+
+exit(0)
+
+X = graph(N)
 fftt = fft(X)
 
 data_fft = [math.sqrt(fftt[i][0] ** 2 + fftt[i][1] ** 2) for i in range(N)]
